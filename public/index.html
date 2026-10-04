@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SafeHer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>SafeHer</h1>
+      <p>Tell the people you trust where you are, fast.</p>
+    </header>
+
+    <section id="auth-screen" class="blue" hidden>
+      <h2 id="auth-title">Log in</h2>
+      <p class="hint">Your contacts and alerts are saved to your own account.</p>
+      <div id="auth-name-row" hidden>
+        <label for="auth-name">Your name</label>
+        <input id="auth-name" type="text" autocomplete="name">
+      </div>
+      <label for="auth-email">Email</label>
+      <input id="auth-email" type="email" autocomplete="email">
+      <label for="auth-password">Password (at least 6 characters)</label>
+      <input id="auth-password" type="password" autocomplete="current-password">
+      <button id="auth-submit" type="button" class="primary">Log in</button>
+      <button id="auth-switch" type="button" class="link-btn">Create a new account</button>
+      <p id="auth-msg" role="status"></p>
+    </section>
+
+    <div id="app" hidden>
+    <div class="userbar">
+      <span id="who"></span>
+      <button id="logout-btn" type="button" class="mini">Log out</button>
+    </div>
+
+    <section class="red">
+      <button id="sos-btn" type="button">
+        <span class="big">SOS</span>
+        <span class="small">Send my location to my contacts</span>
+      </button>
+      <p id="sos-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="blue">
+      <h2>Trusted contacts</h2>
+      <p class="hint">Add people who should get your alerts. For WhatsApp, add their phone number too.</p>
+      <div class="add-contact">
+        <input id="c-name" type="text" placeholder="Contact name" aria-label="Contact name">
+        <input id="c-phone" type="tel" placeholder="Phone, e.g. 98765 43210" aria-label="Contact phone">
+        <input id="c-email" type="email" placeholder="Email address" aria-label="Contact email">
+        <button id="add-btn" type="button" class="primary">Add contact</button>
+      </div>
+      <p id="contact-msg" role="status"></p>
+      <ul id="contact-list"></ul>
+    </section>
+
+    <section class="blue">
+      <h2>Safe-journey timer</h2>
+      <p class="hint">Going somewhere alone? Set a timer. If you don't tap "I'm safe" in time, your contacts get an alert.</p>
+      <div id="journey-setup">
+        <label for="journey-mins">I will arrive in (minutes)</label>
+        <input id="journey-mins" type="number" min="1" max="720" value="20">
+        <button id="journey-start" type="button" class="primary">Start journey</button>
+      </div>
+      <div id="journey-active" hidden>
+        <p id="journey-time" class="countdown">00:00</p>
+        <button id="journey-cancel" type="button" class="primary safe">I'm safe, cancel timer</button>
+      </div>
+      <p id="journey-msg" role="status"></p>
+    </section>
+
+    <section class="teal">
+      <h2>Siren and fake call</h2>
+      <button id="siren-btn" type="button" class="primary alarm">Start siren</button>
+      <p class="hint tight">The siren is loud. Lower your volume before testing.</p>
+
+      <label for="fake-name">Who should the fake call be from?</label>
+      <input id="fake-name" type="text" value="Mom">
+      <label for="fake-delay">Ring after</label>
+      <select id="fake-delay">
+        <option value="0">Right now</option>
+        <option value="5" selected>5 seconds</option>
+        <option value="15">15 seconds</option>
+        <option value="30">30 seconds</option>
+      </select>
+      <button id="fake-btn" type="button" class="primary">Start fake call</button>
+      <p id="tools-msg" role="status"></p>
+    </section>
+
+    <section class="teal">
+      <h2>Find help nearby</h2>
+      <div class="help-links">
+        <a id="link-police" href="#" target="_blank" rel="noopener">Police stations</a>
+        <a id="link-hospital" href="#" target="_blank" rel="noopener">Hospitals</a>
+        <a id="link-pharmacy" href="#" target="_blank" rel="noopener">Pharmacies</a>
+      </div>
+    </section>
+
+    <section class="red">
+      <h2>Emergency numbers in India</h2>
+      <ul class="numbers">
+        <li><a href="tel:112">112</a><span>Any emergency</span></li>
+        <li><a href="tel:1091">1091</a><span>Women helpline</span></li>
+        <li><a href="tel:181">181</a><span>Women in distress</span></li>
+        <li><a href="tel:100">100</a><span>Police</span></li>
+      </ul>
+    </section>
+
+    </div>
+
+    <footer>This app helps you reach people. In an emergency, call 112 first.</footer>
+  </main>
+
+  <div id="call-screen" hidden>
+    <p id="call-status">Incoming call</p>
+    <h2 id="call-name">Mom</h2>
+    <div class="call-actions">
+      <button id="call-decline" type="button" class="call-btn decline">Decline</button>
+      <button id="call-accept" type="button" class="call-btn accept">Accept</button>
+      <button id="call-end" type="button" class="call-btn decline" hidden>End call</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

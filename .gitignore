@@ -1,0 +1,11 @@
+# Secrets and private data: never upload these
+.env
+users.json
+contacts.json
+
+# Installed libraries (anyone can recreate them with "npm install")
+node_modules
+
+# System files
+.DS_Store
+Thumbs.db

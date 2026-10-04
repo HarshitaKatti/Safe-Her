@@ -6,6 +6,12 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 
+// Some networks cannot look up MongoDB Atlas addresses (error "querySrv EBADRESP").
+// If that happens, add DNS_SERVERS=8.8.8.8,1.1.1.1 to .env to use Google and Cloudflare DNS.
+if (process.env.DNS_SERVERS) {
+  require("dns").setServers(process.env.DNS_SERVERS.split(",").map((x) => x.trim()));
+}
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || "dev-secret-change-me";
@@ -71,15 +77,19 @@ async function sendAlert(contacts, subject, text) {
     return { sent: contacts.length, testMode: true };
   }
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS },
-  });
+  // Gmail by default. Some hosts (like Render's free plan) block the Gmail ports,
+  // so you can point the app at another SMTP service with SMTP_HOST and SMTP_PORT.
+  const auth = { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS };
+  const port = Number(process.env.SMTP_PORT) || 587;
+  const transporter = nodemailer.createTransport(
+    process.env.SMTP_HOST
+      ? { host: process.env.SMTP_HOST, port, secure: port === 465, auth }
+      : { service: "gmail", auth }
+  );
 
+  const from = process.env.EMAIL_FROM || process.env.EMAIL_USER;
   await Promise.all(
-    contacts.map((c) =>
-      transporter.sendMail({ from: process.env.EMAIL_USER, to: c.email, subject, text })
-    )
+    contacts.map((c) => transporter.sendMail({ from, to: c.email, subject, text }))
   );
   return { sent: contacts.length, testMode: false };
 }
